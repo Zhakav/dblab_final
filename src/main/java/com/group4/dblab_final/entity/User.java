@@ -1,5 +1,6 @@
 package com.group4.dblab_final.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -32,6 +33,7 @@ public class User implements UserDetails {
 
     @NonNull
     @Column(name = "password" , nullable = false)
+    @JsonProperty( value = "password", access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     @NonNull
@@ -131,5 +133,13 @@ public class User implements UserDetails {
     @Override
     public String getUsername() {
         return username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

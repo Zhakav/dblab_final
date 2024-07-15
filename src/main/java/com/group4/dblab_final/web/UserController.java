@@ -16,6 +16,7 @@ import java.util.UUID;
 public class UserController {
     UserService service;
 
+
     @GetMapping("/{id}")
     public ResponseEntity<User> get(@PathVariable UUID id){
         return new ResponseEntity<>(service.get(id), HttpStatus.OK);

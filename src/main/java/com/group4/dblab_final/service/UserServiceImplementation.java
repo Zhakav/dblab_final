@@ -4,25 +4,40 @@ import com.group4.dblab_final.entity.SalesAssistant;
 import com.group4.dblab_final.entity.User;
 import com.group4.dblab_final.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
 @Service
-@AllArgsConstructor
 public class UserServiceImplementation implements UserService{
 
     UserRepository userRepository;
+    @Lazy
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Autowired
+    public UserServiceImplementation(UserRepository repository,@Lazy BCryptPasswordEncoder bCryptPasswordEncoder) {
+        this.userRepository=repository;
+        this.bCryptPasswordEncoder=bCryptPasswordEncoder;
+    }
 
     @Override
-    public User save(User user) {
+    @Transactional
+    public User save( User user) {
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 
     @Override
     public User update(User user) {
-        if(userRepository.existsById(user.getId()))
-           return userRepository.save(user);
+        if(userRepository.existsById(user.getId())) {
+            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+            return userRepository.save(user);
+        }
         else
             throw new RuntimeException("Id not found");
     }
