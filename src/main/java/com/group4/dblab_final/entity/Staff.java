@@ -17,10 +17,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 
-@Entity
+
 @NoArgsConstructor
 @RequiredArgsConstructor
-@Table(name = "purchase_assistant")
 public class Staff {
 
     @Id
