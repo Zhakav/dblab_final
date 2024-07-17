@@ -8,7 +8,7 @@ function Home() {
   const userCtx = useContext(UserContext)
   const [modal, setModal] = useState({ showModal: false, id: 0 });
   const [staffs, setStaffs] = useState();
-  const [loading, setLoading] = useState(false);
+  const [loading,setLoading] = useState(false);
 
 
   useEffect(()=>{
@@ -21,9 +21,12 @@ function Home() {
         axios.get('http://127.0.0.1:8080/staff/all',{
         headers: {
             Authorization:  JSON.parse(token),
-        }}).then(response=>{
-        setStaffs(response.data)
+        },
+            timeout: 10000,
+        }).then(response=>{
+
             console.log(response.data)
+        setStaffs(response.data)
         }).finally(()=> setLoading(false));
     }
   },[navigate])
@@ -50,7 +53,9 @@ function Home() {
           headers : {
               Authorization: JSON.parse(token)
           }
-      }).then(response =>  navigate(`/update`,{state: {currStaff: response.data}})).catch(error => console.log(error));
+      }).then(response =>  {navigate(`/update`,{state: {currStaff: response.data}})
+        console.log(response.data)
+      }).catch(error => console.log(error));
 
 
   };

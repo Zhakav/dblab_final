@@ -13,7 +13,7 @@ const navigate=useNavigate();
     address: "",
     phoneNum: "",
     gender: "",
-    staffType: "",
+    staffType: "Purchase Assistant",
   });
 
   const submitHandler = (e) => {
@@ -26,7 +26,7 @@ const navigate=useNavigate();
         salary:staff.salary,
         birth_date:staff.birthDate,
         address:staff.address,
-        phone_numbeer:staff.phoneNumber,
+        phone_number:staff.phoneNum,
         gender:staff.gender,
         staffType:staff.staffType
     },{

@@ -28,6 +28,7 @@ console.log(user)
             lname: user.lname,
             fname: user.fname,
             username: user.username,
+            email: user.email,
             password: user.pass,
             birth_date: user.birthDate,
             address: user.address,

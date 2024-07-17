@@ -12,6 +12,7 @@ function UpdateStaff() {
   const submitHandler = (e) => {
     e.preventDefault();
     const token = localStorage.getItem('token');
+    console.log(staff)
     axios.put(`http://127.0.0.1:8080/staff`,{
         id: currStaff.id,
         fname: staff.fname,
@@ -27,7 +28,8 @@ function UpdateStaff() {
         headers: {
             Authorization: JSON.parse(token)
         }
-    }).then(response => {console.log(response.date)
+    }).then(response => {
+    console.log(response.date)
         navigate('/')
     }).catch(err => {console.log(err)})
   };
@@ -132,11 +134,11 @@ function UpdateStaff() {
              </div>
              <div style={{ width: "90%" }}>
                {" "}
-               <label htmlFor="phoneNum">Phone Number: </label>
+               <label htmlFor="phone_number">Phone Number: </label>
                <input
                  style={{ width: "100%" }}
                  type="text"
-                 name="phoneNum"
+                 name="phone_number"
                  onChange={onChangeHandler}
                  value={staff.phone_number}
                />
@@ -156,9 +158,9 @@ function UpdateStaff() {
                    type="radio"
                    name="gender"
                    id="genderMale"
-                   value="M"
+                   value="Male"
                    onChange={onChangeHandler}
-                   checked={staff.gender === "M"}
+                   checked={staff.gender === "Male"}
                  />
                </label>
                <label htmlFor="genderFemale">
@@ -167,9 +169,9 @@ function UpdateStaff() {
                    type="radio"
                    name="gender"
                    id="genderFemale"
-                   value="F"
+                   value="Female"
                    onChange={onChangeHandler}
-                   checked={staff.gender === "F"}
+                   checked={staff.gender === "Female"}
                  />
                </label>
              </div>

@@ -36,10 +36,12 @@ public class StaffServiceImplementation implements StaffService {
     public Staff update(Staff staff) {
         if(Objects.equals(staff.getStaffType(), "Purchase Assistant")) {
             purchaseAssistantRepository.deleteById(staff.getId());
+            salesAssistantRepository.deleteById(staff.getId());
             purchaseAssistantRepository.save(new PurchaseAssistant(staff));
         }
         else if(Objects.equals(staff.getStaffType(), "Sales Assistant")) {
             salesAssistantRepository.deleteById(staff.getId());
+            purchaseAssistantRepository.deleteById(staff.getId());
             salesAssistantRepository.save(new SalesAssistant(staff));
         }
         else
