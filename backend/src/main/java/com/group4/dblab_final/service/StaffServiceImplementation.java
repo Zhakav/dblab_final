@@ -4,6 +4,7 @@ import com.group4.dblab_final.Enumeration.StaffType;
 import com.group4.dblab_final.entity.PurchaseAssistant;
 import com.group4.dblab_final.entity.SalesAssistant;
 import com.group4.dblab_final.entity.Staff;
+import com.group4.dblab_final.exception.EntityNotFoundException;
 import com.group4.dblab_final.repository.PurchaseAssistantRepository;
 import com.group4.dblab_final.repository.SalesAssistantRepository;
 import lombok.AllArgsConstructor;
@@ -33,10 +34,16 @@ public class StaffServiceImplementation implements StaffService {
 
     @Override
     public Staff update(Staff staff) {
-        if(purchaseAssistantRepository.existsById(staff.getId()))
+        if(Objects.equals(staff.getStaffType(), "Purchase Assistant")) {
+            purchaseAssistantRepository.deleteById(staff.getId());
             purchaseAssistantRepository.save(new PurchaseAssistant(staff));
-        else if(salesAssistantRepository.existsById(staff.getId()))
+        }
+        else if(Objects.equals(staff.getStaffType(), "Sales Assistant")) {
+            salesAssistantRepository.deleteById(staff.getId());
             salesAssistantRepository.save(new SalesAssistant(staff));
+        }
+        else
+            throw new RuntimeException("ID does'nt exist in database");
         return staff;
     }
 

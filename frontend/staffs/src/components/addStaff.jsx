@@ -1,6 +1,9 @@
 import React, { useState } from "react";
+import {useNavigate} from "react-router-dom"
+import axios from 'axios';
 
 function AddStaff() {
+const navigate=useNavigate();
   const [staff, setStaff] = useState({
     fname: "",
     lname: "",
@@ -15,8 +18,21 @@ function AddStaff() {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    console.log(e);
-    console.log(staff);
+    const token = localStorage.getItem('token');
+    axios.post('http://127.0.0.1:8080/staff',{
+        fname:staff.fname,
+        lname:staff.lname,
+        email:staff.email,
+        salary:staff.salary,
+        birth_date:staff.birthDate,
+        address:staff.address,
+        phone_numbeer:staff.phoneNumber,
+        gender:staff.gender,
+        staffType:staff.staffType
+    },{
+    headers: {
+        Authorization: JSON.parse(token)
+    }}).then(response => navigate('/')).catch(err =>console.error(err))
   };
 
   const onChangeHandler = (e) => {

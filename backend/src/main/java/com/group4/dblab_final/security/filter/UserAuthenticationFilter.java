@@ -3,9 +3,9 @@ package com.group4.dblab_final.security.filter;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import com.group4.dblab_final.entity.User;
 import com.group4.dblab_final.security.SecurityConstants;
+import com.group4.dblab_final.security.body.JWTResponse;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -29,6 +29,7 @@ import java.util.List;
 public class UserAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private AuthenticationManager authenticationManager;
+
     @Override
     public Authentication attemptAuthentication(
             @NonNull HttpServletRequest request,
@@ -36,17 +37,16 @@ public class UserAuthenticationFilter extends UsernamePasswordAuthenticationFilt
             throws AuthenticationException {
 
         try {
+            User user = new ObjectMapper().readValue(request.getInputStream(), User.class);
 
-            User user= new ObjectMapper().readValue(request.getInputStream(),User.class);
+            Collection<? extends GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_USER"));
 
-            Collection<? extends GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_USER  "));
-
-            Authentication authentication=new UsernamePasswordAuthenticationToken(user.getUsername(),user.getPassword(), authorities);
+            Authentication authentication = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(), authorities);
 
             return authenticationManager.authenticate(authentication);
-
-        }catch (IOException ex){ throw new RuntimeException(); }
-
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
     @Override
@@ -58,7 +58,6 @@ public class UserAuthenticationFilter extends UsernamePasswordAuthenticationFilt
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.getWriter().write(failed.getMessage());
         response.getWriter().flush();
-
     }
 
     @Override
@@ -69,13 +68,17 @@ public class UserAuthenticationFilter extends UsernamePasswordAuthenticationFilt
             @NonNull Authentication authResult)
             throws IOException, ServletException {
 
-        String token= JWT.create()
+        String token = JWT.create()
                 .withSubject(authResult.getName())
-                .withClaim("roles","ROLE_USER")
+                .withClaim("roles", "ROLE_USER")
                 .withExpiresAt(new Date(System.currentTimeMillis() + SecurityConstants.TOKEN_EXPIRATION))
                 .sign(Algorithm.HMAC512(SecurityConstants.SECRET_KEY));
 
-        response.addHeader(SecurityConstants.AUTHORIZATION,SecurityConstants.BEARER + token);
+        JWTResponse authResponse = new JWTResponse(SecurityConstants.BEARER + token);
 
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(new ObjectMapper().writeValueAsString(authResponse));
+        response.getWriter().flush();
     }
 }

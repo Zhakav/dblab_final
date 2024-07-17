@@ -13,6 +13,7 @@ import java.util.UUID;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/staff")
+@CrossOrigin(origins = "http://localhost:3000")
 public class StaffController {
 
     StaffService service;

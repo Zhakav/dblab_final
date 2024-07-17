@@ -1,14 +1,17 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState,useContext } from "react";
+import { useNavigate,Link } from "react-router-dom";
+import UserContext from '../../store/UserContext'
 
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const userCtx = useContext(UserContext)
   const navigate = useNavigate();
 
-  const loginHandler = () => {
-    navigate("/");
-  };
+  const loginHandler = (e) => {
+  e.preventDefault();
+    userCtx.logUserIn({username,password},()=>navigate("/"));
+      };
   return (
     <div
       style={{
@@ -19,8 +22,10 @@ function Login() {
         height: "100vh",
       }}
     >
+        <Link to={'/signup'}>Not have an account? click here</Link>
       <form
         action=""
+        onSubmit={loginHandler}
         style={{
           display: "flex",
           alignItems: "flex-start",
@@ -50,7 +55,7 @@ function Login() {
           />
         </div>
 
-        <button onClick={loginHandler}>Login</button>
+        <button type="submit">Login</button>
       </form>
     </div>
   );
