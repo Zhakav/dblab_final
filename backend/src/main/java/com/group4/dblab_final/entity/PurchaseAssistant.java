@@ -30,6 +30,7 @@ public class PurchaseAssistant {
         this.birth_date=staff.getBirth_date();
         this.address=staff.getAddress();
         this.gender=staff.getGender();
+        this.email=staff.getEmail();
         this.phone_number=staff.getPhone_number();
     }
 

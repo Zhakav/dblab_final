@@ -36,6 +36,7 @@ public class Staff {
         this.address=purchaseAssistant.getAddress();
         this.gender=purchaseAssistant.getGender();
         this.phone_number=purchaseAssistant.getPhone_number();
+        this.email=purchaseAssistant.getEmail();
         this.staffType=StaffType.PURCHASE_ASSISTANT.toString();
     }
 
@@ -48,6 +49,7 @@ public class Staff {
         this.address=salesAssistant.getAddress();
         this.gender=salesAssistant.getGender();
         this.phone_number=salesAssistant.getPhone_number();
+        this.email=salesAssistant.getEmail();
         this.staffType=StaffType.SALES_ASSISTANT.toString();
     }
 
